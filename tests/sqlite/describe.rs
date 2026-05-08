@@ -1115,7 +1115,10 @@ async fn it_validates_insert_with_all_required_columns() -> anyhow::Result<()> {
 
     // Explicit columns including all NOT NULL fields → should succeed
     let d = conn
-        .describe("INSERT INTO test_insert_valid (id, required_a, required_b) VALUES (?, ?, ?)".into_sql_str())
+        .describe(
+            "INSERT INTO test_insert_valid (id, required_a, required_b) VALUES (?, ?, ?)"
+                .into_sql_str(),
+        )
         .await;
 
     assert!(d.is_ok(), "INSERT with all NOT NULL columns should succeed");
@@ -1170,7 +1173,10 @@ async fn it_validates_insert_missing_multiple_required_columns() -> anyhow::Resu
 
     // Missing required_b and required_c → error should list both
     let err = conn
-        .describe("INSERT INTO test_insert_multi_missing (id, required_a) VALUES (?, ?)".into_sql_str())
+        .describe(
+            "INSERT INTO test_insert_multi_missing (id, required_a) VALUES (?, ?)"
+                .into_sql_str(),
+        )
         .await;
 
     assert!(err.is_err());
